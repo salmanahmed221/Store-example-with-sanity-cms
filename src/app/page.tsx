@@ -10,17 +10,19 @@ function urlFor(source: any) {
 }
 
 async function getPosts() {
-  const posts = await client.fetch(`
-    *[_type == 'posts'] {
+  const posts = await client.fetch(
+    `*[_type == 'posts'] {
       _id,
       title,
       slug,
       description,
       image
-    }
-  `);
+    }`
+  );
   return posts;
 }
+
+export const revalidate = 0;
 
 export default async function Home() {
   const posts = await getPosts();

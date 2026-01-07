@@ -24,6 +24,8 @@ async function getPost(slug: string) {
   return post;
 }
 
+export const revalidate = 0;
+
 export default async function PostPage({
   params,
 }: {
