@@ -1,41 +1,83 @@
-import { client } from '@/lib/SanityClient';
-import Image from 'next/image';
-import imageUrlBuilder from '@sanity/image-url';
+import { client } from "@/lib/SanityClient";
+import Image from "next/image";
+import Link from "next/link";
+import imageUrlBuilder from "@sanity/image-url";
+
 const builder = imageUrlBuilder(client);
 
 function urlFor(source: any) {
   return builder.image(source);
 }
 
-async function GetData() {
-  const res = await client.fetch(`*[_type == 'products']`);
-  return res;
+async function getPosts() {
+  const posts = await client.fetch(`
+    *[_type == 'posts'] {
+      _id,
+      title,
+      slug,
+      description,
+      image
+    }
+  `);
+  return posts;
 }
 
-async function Home() {
-  const data = await GetData();
+export default async function Home() {
+  const posts = await getPosts();
 
   return (
-    <div>
-      <h1 className="text-center text-4xl font-bold mt-5 bg-slate-300 py-4">
-        My Store
-      </h1>
-      <div className='md:grid grid-cols-4 gap-5 mt-4 mx-4'>
-        {data.map((elem: any) => (
-          <div key={elem.id} className='bg-gray-200 px-2 py-2 mb-5'>
-            <div className='text-center text-3xl font-bold'>{elem.title}</div>
-            <Image src={urlFor(elem.image).url()} alt="img" width={200} height={200} className='mt-3 mx-auto' />
-            <p className='text-center mt-3'>
-              {elem.description}
-            </p>
-            <p className='text-center mt-3 text-xl font-semibold'>{elem.price}$</p>
-          </div>
-        ))}
+    <main className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm">
+        <div className="max-w-4xl mx-auto py-8 px-4">
+          <h1 className="text-4xl font-bold text-gray-900">My Blog</h1>
+          <p className="mt-2 text-gray-600">Thoughts, stories and ideas</p>
+        </div>
+      </header>
+
+      <div className="max-w-4xl mx-auto px-4 py-12">
+        <div className="grid gap-8">
+          {posts.map((post: any) => (
+            <Link
+              key={post._id}
+              href={`/post/${post.slug?.current}`}
+              className="group"
+            >
+              <article className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+                <div className="md:flex">
+                  {post.image && (
+                    <div className="md:w-72 md:flex-shrink-0">
+                      <Image
+                        src={urlFor(post.image).width(400).height(300).url()}
+                        alt={post.title}
+                        width={400}
+                        height={300}
+                        className="h-48 w-full object-cover md:h-full"
+                      />
+                    </div>
+                  )}
+                  <div className="p-6">
+                    <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                      {post.title}
+                    </h2>
+                    <p className="mt-3 text-gray-600 line-clamp-2">
+                      {post.description}
+                    </p>
+                    <span className="mt-4 inline-block text-blue-600 text-sm font-medium">
+                      Read more →
+                    </span>
+                  </div>
+                </div>
+              </article>
+            </Link>
+          ))}
+        </div>
+
+        {posts.length === 0 && (
+          <p className="text-center text-gray-500 py-12">
+            No posts yet. Add some in the Sanity Studio.
+          </p>
+        )}
       </div>
-    </div>
+    </main>
   );
 }
-
-export default Home;
-
-
