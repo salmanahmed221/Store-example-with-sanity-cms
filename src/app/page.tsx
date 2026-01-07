@@ -22,7 +22,7 @@ async function Home() {
       </h1>
       <div className='md:grid grid-cols-4 gap-5 mt-4 mx-4'>
         {data.map((elem: any) => (
-          <div className='bg-gray-200 px-2 py-2 mb-5'>
+          <div key={elem.id} className='bg-gray-200 px-2 py-2 mb-5'>
             <div className='text-center text-3xl font-bold'>{elem.title}</div>
             <Image src={urlFor(elem.image).url()} alt="img" width={200} height={200} className='mt-3 mx-auto' />
             <p className='text-center mt-3'>
