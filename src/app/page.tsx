@@ -28,57 +28,81 @@ export default async function Home() {
   const posts = await getPosts();
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto py-8 px-4">
-          <h1 className="text-4xl font-bold text-gray-900">My Blog</h1>
-          <p className="mt-2 text-gray-600">Thoughts, stories and ideas</p>
+    <main className="min-h-screen bg-black bg-[url('/mainbg.png')] bg-cover bg-center bg-no-repeat">
+      <header className=" shadow-sm">
+        <div className="max-w-4xl mx-auto p-4 flex items-center">
+          <img src="./logo.svg" alt="/" className="h-[36px] w-[200px]" />
+
+          {/* <div className="flex flex-col">
+            <h1 className="text-4xl font-bold text-gray-900">My Blog</h1>
+            <p className="mt-2 text-gray-600">Thoughts, stories and ideas</p>
+          </div> */}
         </div>
       </header>
-
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="grid gap-8">
-          {posts.map((post: any) => (
-            <Link
-              key={post._id}
-              href={`/post/${post.slug?.current}`}
-              className="group"
-            >
-              <article className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                <div className="md:flex">
-                  {post.image && (
-                    <div className="md:w-72 md:flex-shrink-0">
-                      <Image
-                        src={urlFor(post.image).width(400).height(300).url()}
-                        alt={post.title}
-                        width={400}
-                        height={300}
-                        className="h-48 w-full object-cover md:h-full"
-                      />
+      <div
+        className="max-w-4xl mx-auto rounded-2xl mt-10"
+        style={{
+          background: "rgba(255, 255, 255, 0.05)",
+          border: "1px solid rgba(255, 255, 255, 0.01)",
+          boxShadow:
+            "-15px 15px 10px -15px rgba(255, 255, 255, 0.15) inset, 22px -5px 10px -15px rgba(255, 255, 255, 0.15) inset, -16px -16px 10px -15px rgba(255, 255, 255, 0.7) inset, 17px 17px 10px -20px rgba(255, 255, 255, 0.7) inset",
+          backdropFilter: "blur(3px)",
+        }}
+      >
+        <div className=" px-4 py-12">
+          <div className="grid gap-8">
+            {posts.map((post: any) => (
+              <Link
+                key={post._id}
+                href={`/post/${post.slug?.current}`}
+                className="group"
+              >
+                <article
+                  className="rounded-xl overflow-hidden transition-shadow"
+                  style={{
+                    background: "rgba(0, 0, 0, 0.3)",
+                    border: "0.92px solid transparent",
+                    borderImage:
+                      "linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%) 1",
+                    boxShadow:
+                      "0px 0px 26.4px 0px rgba(242, 242, 242, 0.5) inset, -2.4px -3.6px 1.2px -2.4px rgba(179, 179, 179, 0.2) inset, 2.4px 3.6px 1.2px -2.4px rgba(179, 179, 179, 0.2) inset, 3.6px 3.6px 1.2px -4.2px rgba(255, 255, 255, 0.5) inset, -3.6px -3.6px 1.2px -4.2px rgba(255, 255, 255, 0.5) inset",
+                  }}
+                >
+                  <div className="md:flex">
+                    {post.image && (
+                      <div className="md:w-72 md:flex-shrink-0">
+                        <Image
+                          src={urlFor(post.image).width(400).height(300).url()}
+                          alt={post.title}
+                          width={400}
+                          height={300}
+                          className="h-48 w-full object-cover md:h-full"
+                        />
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h2 className="text-xl font-semibold text-white transition-colors">
+                        {post.title}
+                      </h2>
+                      <p className="mt-3 text-white/70 line-clamp-2">
+                        {post.description}
+                      </p>
+                      <span className="mt-4 inline-block text-[#0BC092] text-sm font-medium">
+                        Read more →
+                      </span>
                     </div>
-                  )}
-                  <div className="p-6">
-                    <h2 className="text-xl font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                      {post.title}
-                    </h2>
-                    <p className="mt-3 text-gray-600 line-clamp-2">
-                      {post.description}
-                    </p>
-                    <span className="mt-4 inline-block text-blue-600 text-sm font-medium">
-                      Read more →
-                    </span>
                   </div>
-                </div>
-              </article>
-            </Link>
-          ))}
-        </div>
+                </article>
+              </Link>
+            ))}
+          </div>
 
-        {posts.length === 0 && (
-          <p className="text-center text-gray-500 py-12">
-            No posts yet. Add some in the Sanity Studio.
-          </p>
-        )}
+          {posts.length === 0 && (
+            <p className="text-center text-gray-500 py-12">
+              No posts yet. Add some in the Sanity Studio.
+            </p>
+          )}
+        </div>
       </div>
     </main>
   );

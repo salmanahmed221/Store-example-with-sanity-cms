@@ -38,40 +38,69 @@ export default async function PostPage({
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
-      <article className="max-w-3xl mx-auto">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 px-4 pt-8"
-        >
-          ← Back to blog
-        </Link>
-
-        {post.image && (
-          <div className="mt-6">
-            <Image
-              src={urlFor(post.image).width(1200).height(600).url()}
-              alt={post.title}
-              width={1200}
-              height={600}
-              className="w-full h-64 md:h-96 object-cover rounded-xl mx-4 md:mx-0"
-              priority
-            />
-          </div>
-        )}
-
-        <div className="px-4 py-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
-            {post.title}
-          </h1>
-
-          <div className="mt-8 prose prose-lg max-w-none">
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
-              {post.description}
-            </p>
-          </div>
+    <main className="min-h-screen bg-black bg-[url('/mainbg.png')] bg-cover bg-center bg-no-repeat">
+      <header className="shadow-sm">
+        <div className="max-w-4xl mx-auto p-4 flex items-center">
+          <Link href="/">
+            <img src="/logo.svg" alt="/" className="h-[36px] w-[200px]" />
+          </Link>
         </div>
-      </article>
+      </header>
+
+      <div
+        className="max-w-4xl mx-auto rounded-2xl mt-10"
+        style={{
+          background: "rgba(255, 255, 255, 0.05)",
+          border: "1px solid rgba(255, 255, 255, 0.01)",
+          boxShadow:
+            "-15px 15px 10px -15px rgba(255, 255, 255, 0.15) inset, 22px -5px 10px -15px rgba(255, 255, 255, 0.15) inset, -16px -16px 10px -15px rgba(255, 255, 255, 0.7) inset, 17px 17px 10px -20px rgba(255, 255, 255, 0.7) inset",
+          backdropFilter: "blur(3px)",
+        }}
+      >
+        <div className="px-4 py-8">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-[#0BC092] hover:text-[#0BC092]/80 transition-colors"
+          >
+            ← Back to blog
+          </Link>
+
+          <article
+            className="mt-6 rounded-xl overflow-hidden"
+            style={{
+              background: "rgba(0, 0, 0, 0.3)",
+              border: "0.92px solid transparent",
+              borderImage:
+                "linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 30%) 1",
+              boxShadow:
+                "0px 0px 26.4px 0px rgba(242, 242, 242, 0.5) inset, -2.4px -3.6px 1.2px -2.4px rgba(179, 179, 179, 0.2) inset, 2.4px 3.6px 1.2px -2.4px rgba(179, 179, 179, 0.2) inset, 3.6px 3.6px 1.2px -4.2px rgba(255, 255, 255, 0.5) inset, -3.6px -3.6px 1.2px -4.2px rgba(255, 255, 255, 0.5) inset",
+            }}
+          >
+            {post.image && (
+              <Image
+                src={urlFor(post.image).width(1200).height(600).url()}
+                alt={post.title}
+                width={1200}
+                height={600}
+                className="w-full h-64 md:h-96 object-cover"
+                priority
+              />
+            )}
+
+            <div className="p-6 md:p-8">
+              <h1 className="text-2xl md:text-4xl font-bold text-white leading-tight">
+                {post.title}
+              </h1>
+
+              <div className="mt-6">
+                <p className="text-white/70 leading-relaxed whitespace-pre-wrap text-justify">
+                  {post.description}
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
     </main>
   );
 }
