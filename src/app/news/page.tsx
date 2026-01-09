@@ -9,9 +9,9 @@ function urlFor(source: any) {
   return builder.image(source);
 }
 
-async function getPosts() {
-  const posts = await client.fetch(
-    `*[_type == 'posts'] {
+async function getNews() {
+  const news = await client.fetch(
+    `*[_type == 'news'] {
       _id,
       title,
       slug,
@@ -19,24 +19,21 @@ async function getPosts() {
       image
     }`
   );
-  return posts;
+  return news;
 }
 
 export const revalidate = 0;
 
-export default async function Home() {
-  const posts = await getPosts();
+export default async function NewsPage() {
+  const news = await getNews();
 
   return (
     <main className="min-h-screen bg-black bg-[url('/mainbg.png')] bg-cover bg-center bg-no-repeat">
-      <header className=" shadow-sm">
+      <header className="shadow-sm">
         <div className="max-w-4xl mx-auto p-4 flex items-center">
-          <img src="./logo.svg" alt="/" className="h-[36px] w-[200px]" />
-
-          {/* <div className="flex flex-col">
-            <h1 className="text-4xl font-bold text-gray-900">My Blog</h1>
-            <p className="mt-2 text-gray-600">Thoughts, stories and ideas</p>
-          </div> */}
+          <Link href="/">
+            <img src="/logo.svg" alt="/" className="h-[36px] w-[200px]" />
+          </Link>
         </div>
       </header>
       <div
@@ -49,23 +46,23 @@ export default async function Home() {
           backdropFilter: "blur(3px)",
         }}
       >
-        <div className=" px-4 py-12">
+        <div className="px-4 py-12">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Latest Blogs
+              Latest News
             </h2>
             <Link
-              href="/news"
+              href="/"
               className="px-4 py-2 bg-[#0BC092] text-black font-medium rounded-lg hover:bg-[#0BC092]/80 transition-colors"
             >
-              View News →
+              View Blogs →
             </Link>
           </div>
           <div className="grid gap-8">
-            {posts.map((post: any) => (
+            {news.map((item: any) => (
               <Link
-                key={post._id}
-                href={`/post/${post.slug?.current}`}
+                key={item._id}
+                href={`/news/${item.slug?.current}`}
                 className="group"
               >
                 <article
@@ -80,11 +77,11 @@ export default async function Home() {
                   }}
                 >
                   <div className="md:flex">
-                    {post.image && (
+                    {item.image && (
                       <div className="md:w-72 md:flex-shrink-0">
                         <Image
-                          src={urlFor(post.image).width(400).height(300).url()}
-                          alt={post.title}
+                          src={urlFor(item.image).width(400).height(300).url()}
+                          alt={item.title}
                           width={400}
                           height={300}
                           className="h-48 w-full object-cover md:h-full"
@@ -93,10 +90,10 @@ export default async function Home() {
                     )}
                     <div className="p-6">
                       <h2 className="text-xl font-semibold text-white transition-colors">
-                        {post.title}
+                        {item.title}
                       </h2>
                       <p className="mt-3 text-white/70 line-clamp-2">
-                        {post.description}
+                        {item.description}
                       </p>
                       <span className="mt-4 inline-block text-[#0BC092] text-sm font-medium">
                         Read more →
@@ -108,9 +105,9 @@ export default async function Home() {
             ))}
           </div>
 
-          {posts.length === 0 && (
+          {news.length === 0 && (
             <p className="text-center text-gray-500 py-12">
-              No posts yet. Add some in the Sanity Studio.
+              No news yet. Add some in the Sanity Studio.
             </p>
           )}
         </div>
